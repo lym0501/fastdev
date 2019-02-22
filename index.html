@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Fetch Api sandbox</h1>
+        <button id="button1">请求本地文本数据</button>
+        <button id="button2">请求本地json数据</button>
+        <button id="button3">请求网络接口</button>
+        <br><br>
+        <div id="outPut"></div>
+		<img id="images" alt="" src="">
+    </div>
+    <script>
+		
+		
+document.getElementById('button1').addEventListener('click',getText);
+document.getElementById('button2').addEventListener('click',getJson);
+document.getElementById('button3').addEventListener('click',getExternal);
+ 
+// 获取本地纯文本数据
+function getText(){
+    fetch('test.txt')
+        .then((res) => res.text())//返回的是text方法
+        .then(data => {
+            console.log(data);
+            document.getElementById('outPut').innerHTML = data;
+        })
+        .catch(err => console.log(err));
+		}
+//获取json数据
+function getJson(){
+    fetch('jsontext.json')
+        .then((res) => res.json())//返回的是json方法
+        .then(data => {
+            console.log(data);
+            let outPut = '';
+            data.forEach((post) =>{
+                outPut += `<li>${post.title}</li>`
+            })
+            document.getElementById('outPut').innerHTML = outPut;
+        })
+        .catch(err => console.log(err));
+}
+
+//网络请求
+function getExternal(){
+    fetch('http://www.forrily.com:8080/img')
+    .then((res) => res.json())//返回的是json方法
+    .then(data => {
+        console.log(data);
+        let outPut = '';
+        data.forEach((user) =>{
+            outPut += `<li>${user.login}</li>`
+        })
+        document.getElementById('outPut').innerHTML = outPut;
+    })
+    .catch(err => console.log(err))
+ 
+}
+
+
+/**
+ *  res.blob().then(blob => {
+          // 创建一个a标签，用于下载
+          var a = document.createElement('a');
+          var url = window.URL.createObjectURL(blob);
+          var fileName = '被下载的文件.txt';
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+      });
+	  
+	  
+	         var src = window.URL.createObjectURL(blob); //静态方法会创建一个 DOMString
+		                console.log(src);
+						$("#images").attr("src",src);
+ */
+	</script>
+</body>
+
